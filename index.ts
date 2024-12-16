@@ -9,10 +9,10 @@ const API_KEY = process.env.API_KEY;
 const NAME_FILTER = process.env.FILTER_NAME;
 
 const b1 = new cliProgress.SingleBar({
-    format: 'Fetching Gifcoins |' + colors.yellow('{bar}') + '| {percentage}% || {value}/{total} Transactions',
-    barCompleteChar: '\u2588',
-    barIncompleteChar: '\u2591',
-    hideCursor: true
+  format: 'Fetching Gifcoins |' + colors.yellow('{bar}') + '| {percentage}% || {value}/{total} Transactions',
+  barCompleteChar: '\u2588',
+  barIncompleteChar: '\u2591',
+  hideCursor: true
 })
 
 async function fetchTransactions() {
@@ -40,14 +40,14 @@ async function fetchTransactions() {
     const transactions = data.transactions || [];
     allTransactions.push(...transactions);
 
-    const pages = data.pagination.pages;
+    const { pages, count } = data.pagination;
 
     if (isFirstRequest) {
-      b1.start(pages, 0)
+      b1.start(count, 0)
       isFirstRequest = false
     }
 
-    b1.increment()
+    b1.update(allTransactions.length)
 
 
     if (++page >= pages) {
