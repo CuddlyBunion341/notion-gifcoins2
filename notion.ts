@@ -1,3 +1,6 @@
+import cliProgress from 'cli-progress'
+import colors from 'ansi-colors'
+
 import { Client } from "@notionhq/client"
 import { type ApiTransaction } from "./types";
 
@@ -22,6 +25,24 @@ function validateTransaction(transaction: ApiTransaction) {
   if (!message || typeof message !== 'string') {
     throw new Error("Invalid message. Message is required and must be a string.");
   }
+}
+
+export async function addTransactions(transactions: ApiTransaction[]) {
+  const b1 = new cliProgress.SingleBar({
+    format: 'Updating Notion database records |' + colors.gray('{bar}') + '| {percentage}% | {value}/{total} Records updated',
+    barCompleteChar: '\u2588',
+    barIncompleteChar: '\u2591',
+    hideCursor: true
+  })
+
+  b1.start(transactions.length, 0)
+
+  transactions.forEach(async (transaction) => {
+    b1.increment()
+    await addTransaction(transaction)
+  });
+
+  b1.stop()
 }
 
 // Function to add transaction to Notion
@@ -66,9 +87,7 @@ export async function addTransaction(transaction: ApiTransaction) {
       },
     };
 
-    // Create the page in Notion
     const response = await notion.pages.create(notionPageData);
-    console.log('Transaction added:', response);
   } catch (error) {
     console.error('Error adding transaction:', error.message);
   }

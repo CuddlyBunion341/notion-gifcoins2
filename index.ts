@@ -1,6 +1,6 @@
 import { config } from 'dotenv'
 import { fetchTransactions } from './gifcoins';
-import { addTransaction } from './notion';
+import { addTransaction, addTransactions } from './notion';
 
 config();
 
@@ -14,7 +14,7 @@ async function main() {
     transaction.recipient.name === NAME_FILTER
   );
 
-  filteredTransactions.forEach(transaction => addTransaction(transaction))
+  addTransactions(filteredTransactions);
 }
 
 main().catch(error => console.error('Error:', error));

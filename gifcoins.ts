@@ -6,7 +6,7 @@ const API_URL = 'https://gifcoins.io/api/v1/transactions';
 const API_KEY = process.env.API_KEY;
 
 const b1 = new cliProgress.SingleBar({
-  format: 'Fetching Gifcoins |' + colors.yellow('{bar}') + '| {percentage}% || {value}/{total} Transactions',
+  format: 'Fetching Gifcoins |' + colors.yellow('{bar}') + '| {percentage}% | {value}/{total} Transactions',
   barCompleteChar: '\u2588',
   barIncompleteChar: '\u2591',
   hideCursor: true
